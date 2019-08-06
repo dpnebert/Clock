@@ -13,22 +13,41 @@
 // Can't be used with buttons
 //#define timerClock    6
 
+
+
+/*
+ * ============== Making numbers that don't change human readable ===============
+ */
+// Making pin numbers human readable
 #define selectA       50
 #define selectB       51  
 #define selectC       52  
 #define selectD       53
 
+// Making pin numbers human readable
 #define button1       21
-#define button2       22
-#define button3       23
-#define button4       24
+#define button2       20
+#define button3       19
+#define button4       18
 
+// Making mode select number human readable
 #define INC_MODE      0
 #define DEC_MODE      1
 #define DIA_MODE      2
 #define INT_MODE      3
+
+// For testing, setting this will allow
+// you to work on a single componet.
+// We'll hook this up to a button also
 int MODE = 0;
 
+
+
+
+
+/*
+ * ============== Creating our characters and select line arrays ===============
+ */
 /*            A
  *          F   B
  *            G
@@ -46,18 +65,6 @@ int MODE = 0;
  *      TO TURN ON LED.
  */
 
-// Setting constant for one second
-// Doing math on this number can give
-// you any timer delay you want
-//
-// The timer delay is calculated using
-// the speed of the microcontroller
-// and the programmed prescaler.
-// To get more precision or ability
-// for longer delays, modify formula:
-// 3036 = 65536 - (16MHz/256/1Hz)
-// http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
-const uint8_t tcnt_one_second = 3036;
 
 
                           //   D
@@ -85,26 +92,61 @@ const char displays[] = { selectA,
                           selectC,
                           selectD };
 
-                          
+
+
+
+
+/*
+ * ============== Our global variables we want to use the whole life span of the program ===============
+ */
+// Setting constant for one second
+// Doing math on this number can give
+// you any timer delay you want
+//
+// The timer delay is calculated using
+// the speed of the microcontroller
+// and the programmed prescaler.
+// To get more precision or ability
+// for longer delays, modify formula:
+// 3036 = 65536 - (16MHz/256/1Hz)
+// http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
+const uint8_t tcnt_one_second = 3036;
+
+// The internal interrupt will count to Timer_one_second
+// and set the boolean variable 'flag' to true
 const int Timer_one_second = 3036;
-int tick_rate;
-int delay_ms;
 bool flag;
+
+// We dont want to change Timer_one_second,
+// instead we want a variable we can change
+// by doing math on Timer_one_second
+int tick_rate;
+
+// This is how long each 7 seg display will be on
+int pulse_delay_ms;
+
+// We can change the number we count up to by
+// changing radixCeiling
 int radixCeiling;
+
+// Variables to hold the hexadecimal character being displayed
 int ones;
-bool onesDecimal;
 int tens;
 int hundreds;
 int thousands;
-int incrementDir;
-bool counting;
 
+// 1 to increment, -1 to decrement
+int incrementDir;
+
+// For use to detect when a button is pressed
 bool bButton1;
 bool bButton2;
 bool bButton3;
 bool bButton4;
 
-
+/*
+ * ============== ===============
+ */
 void loop()
 {
 
@@ -131,7 +173,9 @@ void loop()
    
   
   
-  
+  /*
+   * ============== Incrementing from 0 to radixCeiling ===============
+   */
   if(MODE == INC_MODE)
   {
 
@@ -139,7 +183,8 @@ void loop()
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button1 - 20);
-      
+
+      // Diagnostics mode
       MODE = 2;
       bButton1 = false;
     }  
@@ -163,10 +208,6 @@ void loop()
     }
 
 
-
-
-
-    
     updatePortValues(characters[ones]);
     pulseSelectLine(selectD);
      
@@ -224,55 +265,131 @@ void loop()
       }
     }
   }
+
+
+
+  /*
+   * ============== Decrementing from radixCeiling to 0 ===============
+   */ 
   else if(MODE == DEC_MODE)
   {
-    
+    // todo
   }
+
+
+
+
+
+
+
+
+  
+   /*
+   * ============== Implementing three different diagnostic tests ===============
+   * 
+   *                You can edit the title and anything in your section below
+   */
   else if(MODE == DIA_MODE)
   {
-    if(Serial.available())
-    {
-      char command = Serial.read();
-      if(command == 33)
-      {
-       sequenceOn();
-      }
-    }
 
-    
+
+    // Go back to INC/DEC (MODE SELECT)
     if(bButton1)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button1 - 20);
 
-      sequenceOn();
-      MODE = 0;
-      
+      if(incrementDir == 1)
+      {
+        MODE = 0;
+      }
+      else
+      {
+        MODE = 1;
+      }
       bButton1 = false;
-    }  
+    }
+
+    // TEST 1
     if(bButton2)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button2 - 20);
+
+      // doStuff
+      sequenceOn();
+
+      // Go back to INC/DEC (MODE SELECT)
+      if(incrementDir == 1)
+      {
+        MODE = 0;
+      }
+      else
+      {
+        MODE = 1;
+      }
+      
       bButton2 = false;
     }
+
+    // TEST 2
     if(bButton3)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button3 - 20);
+
+      // doStuff
+
+      // Go back to INC/DEC (MODE SELECT)
+      if(incrementDir == 1)
+      {
+        MODE = 0;
+      }
+      else
+      {
+        MODE = 1;
+      }
+      
       bButton3 = false;
     }
+
+    // TEST 3
     if(bButton4)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button4 - 20);
+
+      // doStuff
+
+      // Go back to INC/DEC (MODE SELECT)
+      if(incrementDir == 1)
+      {
+        MODE = 0;
+      }
+      else
+      {
+        MODE = 1;
+      }
+      
       bButton4 = false;
-    }
-
-
-
-    
+    }    
   }
+   /*
+   * ============== Implementing three different diagnostic tests ===============
+   * 
+   *                End diagnostics block
+   */
+
+
+
+
+
+
+
+
+   /*
+   * ============== Interface mode.  Allows display to be completly controlled by serial communication ===============
+   */
   else if(MODE == INT_MODE)
   {
     
@@ -287,7 +404,72 @@ void loop()
   }
 }
 
+ /*
+ * ============== BEGIN Diagnostics Code ===============
+ */
+//Aqeel's code
 
+void portSequence()
+  {
+    int delaytime = 500;
+    digitalWrite(37, HIGH);
+    delay(delaytime);
+    digitalWrite(36, HIGH);
+    delay(delaytime);
+    digitalWrite(35, HIGH);
+    delay(delaytime);
+    digitalWrite(34, HIGH);
+    delay(delaytime);
+    digitalWrite(33, HIGH);
+    delay(delaytime);
+    digitalWrite(32, HIGH);
+    delay(delaytime);
+    digitalWrite(31, HIGH);
+    delay(delaytime);
+    digitalWrite(30, HIGH);
+    delay(delaytime);
+
+    digitalWrite(37, LOW);
+    delay(delaytime);
+    digitalWrite(36, LOW);
+    delay(delaytime);
+    digitalWrite(35, LOW);
+    delay(delaytime);
+    digitalWrite(34, LOW);
+    delay(delaytime);
+    digitalWrite(33, LOW);
+    delay(delaytime);
+    digitalWrite(32, LOW);
+    delay(delaytime);
+    digitalWrite(31, LOW);
+    delay(delaytime);
+    digitalWrite(30, LOW);
+    delay(delaytime);
+    
+  }
+
+void sequenceOn()
+{
+  selectPinsOn();
+  portSequence();
+  selectPinsOff();
+}
+ /*
+ * ============== END Diagnostics Code ===============
+ */
+
+
+
+
+
+
+
+
+ /*
+ * ============== Setup Code ===============
+ * 
+ *     We can review this if you need
+ */
 void setup() {
   Serial.begin(9600);
   while(!Serial){}
@@ -300,15 +482,17 @@ void setup() {
   tick_rate = Timer_one_second;
   
   radixCeiling = 15;
-  delay_ms = 3;
+
+  pulse_delay_ms = 3;
+  
   flag = false;
+  
   ones = 0;
-  onesDecimal = true;
   tens = 0;
   hundreds = 0;
   thousands = 0;
+  
   incrementDir = 1;
-  counting = true;
   
   initPorts();
   initSelectPins();  
@@ -322,30 +506,41 @@ void setup() {
 
 
 // Turn the pin 'select' HIGH for the
-// delay_ms length of time, then 
+// pulse_delay_ms length of time, then 
 // turns 'select' back to LOW
 //
 void pulseSelectLine(int select)
 {
   digitalWrite(select, HIGH);
-  delay(delay_ms);
+  delay(pulse_delay_ms);
   digitalWrite(select, LOW);
 }
 
-// We give it eight bits, and this
-// method reads the lower half into
-// PORTB, and the upper in to PORTC
+// In one, very, very efficient swoop,
+// we essentially assign:
+//    PORTC[0] = character[0]
+//    PORTC[1] = character[1]
+//    PORTC[2] = character[2]
+//    PORTC[3] = character[3]
+//    PORTC[4] = character[4]
+//    PORTC[5] = character[5]
+//    PORTC[6] = character[6]
+//    PORTC[7] = character[7]
 void updatePortValues(char character)
 {  
   PORTC = character;
 }
 
-
+// Interrupt vector triggered by TIMER1
 ISR(TIMER1_OVF_vect)        // interrupt service routine that wraps a user defined function supplied by attachInterrupt
 {
+  // Update the tick_rate here incase
+  // we speed up or slow down the clock
   TCNT1 = tick_rate;            // preload timer
   flag = true;
 }
+
+// Good thing for datasheets and people smarter than I
 void initTimer()
 {
   // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
@@ -364,6 +559,7 @@ void initTimer()
 
 }
 
+// Now we are only using PORTC to control the segments
 void initPorts()
 {
   DDRC = 0b11111111;
@@ -429,53 +625,4 @@ void setNumber(int o, int te, int h, int th)
   hundreds = h;
   thousands = th;
   flag = true;
-}
-
-
-//Aqeel's code
-
-void portSequence()
-  {
-    int delaytime = 500;
-    digitalWrite(37, HIGH);
-    delay(delaytime);
-    digitalWrite(36, HIGH);
-    delay(delaytime);
-    digitalWrite(35, HIGH);
-    delay(delaytime);
-    digitalWrite(34, HIGH);
-    delay(delaytime);
-    digitalWrite(33, HIGH);
-    delay(delaytime);
-    digitalWrite(32, HIGH);
-    delay(delaytime);
-    digitalWrite(31, HIGH);
-    delay(delaytime);
-    digitalWrite(30, HIGH);
-    delay(delaytime);
-
-    digitalWrite(37, LOW);
-    delay(delaytime);
-    digitalWrite(36, LOW);
-    delay(delaytime);
-    digitalWrite(35, LOW);
-    delay(delaytime);
-    digitalWrite(34, LOW);
-    delay(delaytime);
-    digitalWrite(33, LOW);
-    delay(delaytime);
-    digitalWrite(32, LOW);
-    delay(delaytime);
-    digitalWrite(31, LOW);
-    delay(delaytime);
-    digitalWrite(30, LOW);
-    delay(delaytime);
-    
-  }
-
-void sequenceOn()
-{
-  selectPinsOn();
-  portSequence();
-  selectPinsOff();
 }
