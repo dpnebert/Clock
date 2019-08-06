@@ -390,7 +390,6 @@ void portSequence()
     delay(delaytime);
     digitalWrite(10, HIGH);
     delay(delaytime);
-    delay(delaytime);
     digitalWrite(11, HIGH);
     delay(delaytime);
     digitalWrite(14, HIGH);
