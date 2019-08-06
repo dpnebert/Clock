@@ -418,7 +418,6 @@ void portSequence()
     delay(delaytime);
     digitalWrite(17, LOW);
     delay(delaytime);
-    
   }
 
 void sequenceOn()
