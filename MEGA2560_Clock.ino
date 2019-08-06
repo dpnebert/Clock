@@ -139,25 +139,27 @@ void loop()
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button1 - 20);
-      bButton1 = !digitalRead(button1);
+      
+      MODE = 2;
+      bButton1 = false;
     }  
     if(bButton2)
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button2 - 20);
-      bButton2 = !digitalRead(button2);
+      bButton2 = false;
     }
     if(bButton3)
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button3 - 20);
-      bButton3 = !digitalRead(button3);
+      bButton3 = false;
     }
     if(bButton4)
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button4 - 20);
-      bButton4 = !digitalRead(button4);
+      bButton4 = false;
     }
 
 
@@ -242,25 +244,29 @@ void loop()
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button1 - 20);
-      bButton1 = !digitalRead(button1);
+
+      sequenceOn();
+      MODE = 0;
+      
+      bButton1 = false;
     }  
     if(bButton2)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button2 - 20);
-      bButton2 = !digitalRead(button2);
+      bButton2 = false;
     }
     if(bButton3)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button3 - 20);
-      bButton3 = !digitalRead(button3);
+      bButton3 = false;
     }
     if(bButton4)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button4 - 20);
-      bButton4 = !digitalRead(button4);
+      bButton4 = false;
     }
 
 
@@ -394,10 +400,10 @@ void initButtons()
 }
 void initButtonInterrupts()
 {
-  attachInterrupt(digitalPinToInterrupt(button1), button1_Pressed, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(button2), button2_Pressed, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(button3), button3_Pressed, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(button4), button4_Pressed, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(button1), button1_Pressed, FALLING);
+  attachInterrupt(digitalPinToInterrupt(button2), button2_Pressed, FALLING);
+  attachInterrupt(digitalPinToInterrupt(button3), button3_Pressed, FALLING);
+  attachInterrupt(digitalPinToInterrupt(button4), button4_Pressed, FALLING);
 }
 void button1_Pressed()
 {
