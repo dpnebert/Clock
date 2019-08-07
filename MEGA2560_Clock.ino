@@ -30,7 +30,7 @@
 // For testing, setting this will allow
 // you to work on a single componet.
 // We'll hook this up to a button also
-int MODE = 1;
+int MODE = 0;
 
 
 
@@ -487,6 +487,15 @@ void loop()
    */
   else if(MODE == INT_MODE)
   {
+    
+    updatePortValues(127);
+    pulseSelectLine(selectB);  
+    updatePortValues(127);
+    pulseSelectLine(selectC);  
+    updatePortValues(127);
+    pulseSelectLine(selectD);  
+    updatePortValues(127);
+    pulseSelectLine(selectA);  
     
     if(Serial.available())
     {
