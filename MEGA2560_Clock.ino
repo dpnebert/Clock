@@ -30,7 +30,7 @@
 // For testing, setting this will allow
 // you to work on a single componet.
 // We'll hook this up to a button also
-int MODE = 0;
+int MODE = 1;
 
 
 
@@ -263,8 +263,102 @@ void loop()
    */ 
   else if(MODE == DEC_MODE)
   {
-    // todo
+
+    Serial.print(tens);
+    Serial.print(", ");
+    Serial.print(hundreds);
+    Serial.print(", ");
+    Serial.print(thousands);
+    Serial.print("\n");
+    
+    if(bButton1)
+    {
+      Serial.print("DEC_BUTTON - ");
+      Serial.println(button1 - 20);
+
+      // Diagnostics mode
+      MODE = 2;
+      bButton1 = false;
+    }  
+    if(bButton2)
+    {
+      Serial.print("DEC_BUTTON - ");
+      Serial.println(button2 - 20);
+      bButton2 = false;
+    }
+    if(bButton3)
+    {
+      Serial.print("DEC_BUTTON - ");
+      Serial.println(button3 - 20);
+      bButton3 = false;
+    }
+    if(bButton4)
+    {
+      Serial.print("DEC_BUTTON - ");
+      Serial.println(button4 - 20);
+      bButton4 = false;
+    }
+
+
+    updatePortValues(characters[ones]);
+    pulseSelectLine(selectD);
+     
+    if((tens != 0) || (hundreds > 0 || thousands > 0))
+    { 
+      updatePortValues(characters[tens]);
+      pulseSelectLine(selectC);  
+    }
+    
+    if((hundreds > 0) || thousands > 0)
+    {
+      updatePortValues(characters[hundreds]);
+      pulseSelectLine(selectB);  
+    }
+  
+    if(thousands > 0)
+    {
+      updatePortValues(characters[thousands]);
+      pulseSelectLine(selectA);
+    }
+    
+  
+    if(flag)
+    { 
+      // toggle pin for scope to see
+      // the timer's clock
+      //PORTD ^= 0b01000000; 
+  
+      
+      flag = false;
+
+    
+      if(ones == 0)
+      {
+        ones = radixCeiling;
+        tens--;
+      }
+      else
+      {
+        ones--;
+      }
+      if(tens < 0)
+      {
+        tens = radixCeiling;
+        hundreds--;
+      }
+      if(hundreds < 0)
+      {
+        hundreds = radixCeiling;
+        thousands--;
+      }
+      if(thousands < 0)
+      {
+        thousands = radixCeiling;
+      }
+    }
   }
+
+  
 
 
 
@@ -296,6 +390,7 @@ void loop()
       Serial.print("DIA_BUTTON - ");
       Serial.println(button1 - 20);
 
+      incrementDir = -1;
       if(incrementDir == 1)
       {
         MODE = 0;
@@ -316,6 +411,9 @@ void loop()
       // doStuff
       sequenceOn();
 
+
+      
+      incrementDir = -1;
       // Go back to INC/DEC (MODE SELECT)
       if(incrementDir == 1)
       {
