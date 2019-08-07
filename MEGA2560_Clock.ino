@@ -30,7 +30,7 @@
 // For testing, setting this will allow
 // you to work on a single componet.
 // We'll hook this up to a button also
-int MODE = 0;
+static int MODE = 0;
 
 
 
@@ -125,8 +125,12 @@ int tens;
 int hundreds;
 int thousands;
 
-// 1 to increment, -1 to decrement
-int incrementDir;
+
+// Variables to hold the bit patterns to use in interface mode
+int i_ones;
+int i_tens;
+int i_hundreds;
+int i_thousands;
 
 // For use to detect when a button is pressed
 bool bButton1;
@@ -160,9 +164,17 @@ void loop()
    * DIAGNOSTIC mode, we can just specify 
    * 
    */
-   
+
+
+
+  // Let's check to see if we have a interface command
+  checkInterface();
+
   
-  
+  if(MODE == 1)
+  {
+    digitalWrite(13, HIGH);
+  }
   /*
    * ============== Incrementing from 0 to radixCeiling ===============
    */
@@ -263,14 +275,6 @@ void loop()
    */ 
   else if(MODE == DEC_MODE)
   {
-
-    Serial.print(tens);
-    Serial.print(", ");
-    Serial.print(hundreds);
-    Serial.print(", ");
-    Serial.print(thousands);
-    Serial.print("\n");
-    
     if(bButton1)
     {
       Serial.print("DEC_BUTTON - ");
@@ -390,8 +394,7 @@ void loop()
       Serial.print("DIA_BUTTON - ");
       Serial.println(button1 - 20);
 
-      incrementDir = -1;
-      if(incrementDir == 1)
+      if(MODE == 1)
       {
         MODE = 0;
       }
@@ -413,9 +416,8 @@ void loop()
 
 
       
-      incrementDir = -1;
       // Go back to INC/DEC (MODE SELECT)
-      if(incrementDir == 1)
+      if(MODE == 1)
       {
         MODE = 0;
       }
@@ -436,7 +438,7 @@ void loop()
       // doStuff
 
       // Go back to INC/DEC (MODE SELECT)
-      if(incrementDir == 1)
+      if(MODE == 1)
       {
         MODE = 0;
       }
@@ -457,7 +459,7 @@ void loop()
       // doStuff
 
       // Go back to INC/DEC (MODE SELECT)
-      if(incrementDir == 1)
+      if(MODE == 1)
       {
         MODE = 0;
       }
@@ -487,7 +489,16 @@ void loop()
    */
   else if(MODE == INT_MODE)
   {
-    
+    updatePortValues(i_ones);
+    pulseSelectLine(selectD);
+    updatePortValues(i_tens);
+    pulseSelectLine(selectC);
+    updatePortValues(i_hundreds);
+    pulseSelectLine(selectB);
+    updatePortValues(i_thousands);
+    pulseSelectLine(selectA);
+     
+    /*
     updatePortValues(127);
     pulseSelectLine(selectB);  
     updatePortValues(127);
@@ -496,15 +507,7 @@ void loop()
     pulseSelectLine(selectD);  
     updatePortValues(127);
     pulseSelectLine(selectA);  
-    
-    if(Serial.available())
-    {
-      char command = Serial.read();
-      if(command == 33)
-      {
-       digitalWrite(7, !digitalRead(7));
-      }
-    }
+    */
   }
 }
 
@@ -516,23 +519,8 @@ void loop()
 void portSequence()
   {
     int delaytime = 500;
-    digitalWrite(37, HIGH);
-    delay(delaytime);
-    digitalWrite(36, HIGH);
-    delay(delaytime);
-    digitalWrite(35, HIGH);
-    delay(delaytime);
-    digitalWrite(34, HIGH);
-    delay(delaytime);
-    digitalWrite(33, HIGH);
-    delay(delaytime);
-    digitalWrite(32, HIGH);
-    delay(delaytime);
-    digitalWrite(31, HIGH);
-    delay(delaytime);
-    digitalWrite(30, HIGH);
-    delay(delaytime);
-
+    PORTC = 255;
+    
     digitalWrite(37, LOW);
     delay(delaytime);
     digitalWrite(36, LOW);
@@ -550,6 +538,24 @@ void portSequence()
     digitalWrite(30, LOW);
     delay(delaytime);
     
+    digitalWrite(37, HIGH);
+    delay(delaytime);
+    digitalWrite(36, HIGH);
+    delay(delaytime);
+    digitalWrite(35, HIGH);
+    delay(delaytime);
+    digitalWrite(34, HIGH);
+    delay(delaytime);
+    digitalWrite(33, HIGH);
+    delay(delaytime);
+    digitalWrite(32, HIGH);
+    delay(delaytime);
+    digitalWrite(31, HIGH);
+    delay(delaytime);
+    digitalWrite(30, HIGH);
+    delay(delaytime);
+
+    
   }
 
 void sequenceOn()
@@ -561,6 +567,54 @@ void sequenceOn()
  /*
  * ============== END Diagnostics Code ===============
  */
+
+
+
+
+// Interface command parsing
+void checkInterface()
+{
+  if(Serial.available())
+  {
+    char command = Serial.read();
+    if(command == 32)
+    {
+      MODE = 3;
+      i_ones = 0;
+      i_tens = 0;
+      i_hundreds = 0;
+      i_thousands = 0;
+    }
+    else if(command == 33)
+    {
+      MODE = 3;
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = 255;
+    }
+    else if(command == 34)
+    {
+      sequenceOn();
+    }
+    else if(command == 35)
+    {
+      // test 2
+    }
+    else if(command == 36)
+    {
+      // test 3
+    }
+    else if(command == 37)
+    {
+      MODE = 0;
+    }
+    else if(command == 38)
+    {
+      MODE = 1;
+    }
+  }
+}
 
 
 
@@ -577,6 +631,9 @@ void sequenceOn()
 void setup() {
   Serial.begin(9600);
   while(!Serial){}
+
+  pinMode(13, OUTPUT);
+  digitalWrite(13, LOW);
 
   bButton1 = false;
   bButton2 = false;
@@ -596,7 +653,6 @@ void setup() {
   hundreds = 0;
   thousands = 0;
   
-  incrementDir = 1;
   
   initPorts();
   initSelectPins();  
@@ -606,6 +662,16 @@ void setup() {
   // Last, due to it enables global interrupts at the end
   initTimer();
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -722,7 +788,7 @@ void button4_Pressed()
   bButton4 = !bButton4;
 }
 
-void setNumber(int o, int te, int h, int th)
+void setNumber(int th, int h, int te, int o)
 {
   ones = o;
   tens = te;
