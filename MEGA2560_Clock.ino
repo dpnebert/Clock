@@ -2,18 +2,9 @@
  * This code has a one second timer using
  * the bool variable flag to indicate one
  * second has elapsed, and will continue
- * to do so.
- * 
- * It uses PORTB and PORTC for the display.
- * Four bits to the lower nibble of PORTB and
- * four bits to the lower nibble of PORTC
- * Select pins are 2, 3, 4, 5
+ * to do so. 
  * 
  */
-// Can't be used with buttons
-//#define timerClock    6
-
-
 
 /*
  * ============== Making numbers that don't change human readable ===============
@@ -287,10 +278,17 @@ void loop()
    /*
    * ============== Implementing three different diagnostic tests ===============
    * 
-   *                You can edit the title and anything in your section below
+   *                You can edit the title and anything in the section below
    */
   else if(MODE == DIA_MODE)
   {
+  
+    updatePortValues(characters[13]);
+    pulseSelectLine(selectB);  
+    updatePortValues(0b111001111);
+    pulseSelectLine(selectC);  
+    updatePortValues(characters[10]);
+    pulseSelectLine(selectD);  
 
 
     // Go back to INC/DEC (MODE SELECT)
