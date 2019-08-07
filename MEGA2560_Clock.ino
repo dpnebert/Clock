@@ -104,7 +104,7 @@ const uint8_t tcnt_one_second = 3036;
 
 // The internal interrupt will count to Timer_one_second
 // and set the boolean variable 'flag' to true
-const int Timer_one_second = 3036;
+const int Timer_one_second = tcnt_one_second;
 bool flag;
 
 // We dont want to change Timer_one_second,
