@@ -43,8 +43,7 @@ int MODE = 0;
  *          F   B
  *            G
  *          E   C
- *            D
- *                Dp
+ *            D   Dp
  *          
  *          
  *          
