@@ -517,46 +517,46 @@ void loop()
 //Aqeel's code
 
 void portSequence()
-{
-  int delaytime = 500;
-  PORTC = 255;
-  
-  digitalWrite(37, LOW);
-  delay(delaytime);
-  digitalWrite(36, LOW);
-  delay(delaytime);
-  digitalWrite(35, LOW);
-  delay(delaytime);
-  digitalWrite(34, LOW);
-  delay(delaytime);
-  digitalWrite(33, LOW);
-  delay(delaytime);
-  digitalWrite(32, LOW);
-  delay(delaytime);
-  digitalWrite(31, LOW);
-  delay(delaytime);
-  digitalWrite(30, LOW);
-  delay(delaytime);
-  
-  digitalWrite(37, HIGH);
-  delay(delaytime);
-  digitalWrite(36, HIGH);
-  delay(delaytime);
-  digitalWrite(35, HIGH);
-  delay(delaytime);
-  digitalWrite(34, HIGH);
-  delay(delaytime);
-  digitalWrite(33, HIGH);
-  delay(delaytime);
-  digitalWrite(32, HIGH);
-  delay(delaytime);
-  digitalWrite(31, HIGH);
-  delay(delaytime);
-  digitalWrite(30, HIGH);
-  delay(delaytime);
+  {
+    int delaytime = 500;
+    PORTC = 255;
+    
+    digitalWrite(37, LOW);
+    delay(delaytime);
+    digitalWrite(36, LOW);
+    delay(delaytime);
+    digitalWrite(35, LOW);
+    delay(delaytime);
+    digitalWrite(34, LOW);
+    delay(delaytime);
+    digitalWrite(33, LOW);
+    delay(delaytime);
+    digitalWrite(32, LOW);
+    delay(delaytime);
+    digitalWrite(31, LOW);
+    delay(delaytime);
+    digitalWrite(30, LOW);
+    delay(delaytime);
+    
+    digitalWrite(37, HIGH);
+    delay(delaytime);
+    digitalWrite(36, HIGH);
+    delay(delaytime);
+    digitalWrite(35, HIGH);
+    delay(delaytime);
+    digitalWrite(34, HIGH);
+    delay(delaytime);
+    digitalWrite(33, HIGH);
+    delay(delaytime);
+    digitalWrite(32, HIGH);
+    delay(delaytime);
+    digitalWrite(31, HIGH);
+    delay(delaytime);
+    digitalWrite(30, HIGH);
+    delay(delaytime);
 
-  
-}
+    
+  }
 
 void sequenceOn()
 {
@@ -577,7 +577,7 @@ void checkInterface()
   if(Serial.available())
   {
     char command = Serial.read();
-    if(command == 32) // All On
+    if(command == 32)
     {
       MODE = 3;
       i_ones = 0;
@@ -585,7 +585,7 @@ void checkInterface()
       i_hundreds = 0;
       i_thousands = 0;
     }
-    else if(command == 33) // All Off
+    else if(command == 33)
     {
       MODE = 3;
       i_ones = 255;
@@ -593,23 +593,23 @@ void checkInterface()
       i_hundreds = 255;
       i_thousands = 255;
     }
-    else if(command == 34) // Diagnostic test 1
+    else if(command == 34)
     {
       sequenceOn();
     }
-    else if(command == 35) // Diagnostic test 2
+    else if(command == 35)
     {
       // test 2
     }
-    else if(command == 36) // Diagnostic test 3
+    else if(command == 36)
     {
       // test 3
     }
-    else if(command == 37) // increment
+    else if(command == 37)
     {
       MODE = 0;
     }
-    else if(command == 38) // decrement
+    else if(command == 38)
     {
       MODE = 1;
     }
