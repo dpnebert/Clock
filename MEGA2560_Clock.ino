@@ -1,18 +1,43 @@
 /*
- * This code has a one second timer using
- * the bool variable flag to indicate one
- * second has elapsed, and will continue
- * to do so. 
- * 
- */
+   This code has a one second timer using
+   the bool variable flag to indicate one
+   second has elapsed, and will continue
+   to do so.
+
+*/
 
 /*
- * ============== Making numbers that don't change human readable ===============
- */
+   Pin mappings
+
+
+  L1    - 50
+  L2    - 51
+  L3    - 52
+  L4    - 53
+  A     - 37
+  B     - 36
+  C     - 35
+  D     - 34
+  E     - 33
+  F     - 32
+  G     - 31
+  Dp    - 30
+  button1 - 21
+  button2 - 20
+  button3 - 19
+  button4 - 18
+
+*/
+
+
+
+/*
+   ============== Making numbers that don't change human readable ===============
+*/
 // Making pin numbers human readable
 #define selectA       50
-#define selectB       51  
-#define selectC       52  
+#define selectB       51
+#define selectC       52
 #define selectD       53
 
 // Making pin numbers human readable
@@ -37,58 +62,59 @@ static int MODE = 0;
 
 
 /*
- * ============== Creating our characters and select line arrays ===============
- */
+   ============== Creating our characters and select line arrays ===============
+*/
 /*            A
- *          F   B
- *            G
- *          E   C
- *            D   Dp
- *          
- *          
- *          
- *          
- *         8  7654321 
- *      0b(Dp)GFEDCBA
- *      
- *      MUST MAKE BIT ZERO
- *      TO TURN ON LED.
- */
+            F   B
+              G
+            E   C
+              D   Dp
 
 
 
-                          //   D
-                          //   pGFEDCBA
-const char characters[16]= { 0b11000000, //0
-                             0b11111001, //1
-                             0b10100100, //2
-                             0b10110000, //3
-                             0b10011001, //4
-                             0b10010010, //5
-                             0b10000010, //6
-                             0b11111000, //7
-                             0b10000000, //8
-                             0b10011000, //9
-                             0b10001000, //A
-                             0b10000011, //B
-                             0b11000110, //C
-                             0b10100001, //D
-                             0b10000110, //E
-                             0b10001110  //F
-                           };
-                       
+
+           8  7654321
+        0b(Dp)GFEDCBA
+
+        MUST MAKE BIT ZERO
+        TO TURN ON LED.
+*/
+
+
+
+//   D
+//   pGFEDCBA
+const char characters[16] = { 0b11000000, //0
+                              0b11111001, //1
+                              0b10100100, //2
+                              0b10110000, //3
+                              0b10011001, //4
+                              0b10010010, //5
+                              0b10000010, //6
+                              0b11111000, //7
+                              0b10000000, //8
+                              0b10011000, //9
+                              0b10001000, //A
+                              0b10000011, //B
+                              0b11000110, //C
+                              0b10100001, //D
+                              0b10000110, //E
+                              0b10001110  //F
+                            };
+
 const char displays[] = { selectA,
                           selectB,
                           selectC,
-                          selectD };
+                          selectD
+                        };
 
 
 
 
 
 /*
- * ============== Our global variables we want to use the whole life span of the program ===============
- */
+   ============== Our global variables we want to use the whole life span of the program ===============
+*/
 // Setting constant for one second
 // Doing math on this number can give
 // you any timer delay you want
@@ -138,52 +164,50 @@ bool bButton2;
 bool bButton3;
 bool bButton4;
 
-
-
 /*
- * ============== ===============
- */
+   ============== ===============
+*/
 void loop()
 {
 
   /*
-   * 
-   * 
-   * Button 1 is connected to pin 21
-   * Button 2 is connected to pin 22
-   * Button 3 is connected to pin 23
-   * Button 4 is connected to pin 24
-   * 
-   * When the button X goes from HIGH to LOW:
-   *  bButtonX becomes true
-   * When the button X goes from LOW to HIGH:
-   *  bButtonX becomes false
-   * 
-   * We can copy and paste the below block of code in
-   * to  So if
-   * you want the buttons to function differently
-   * depending on if we are in INCREMENT mode or
-   * DIAGNOSTIC mode, we can just specify 
-   * 
-   */
+
+
+     Button 1 is connected to pin 21
+     Button 2 is connected to pin 22
+     Button 3 is connected to pin 23
+     Button 4 is connected to pin 24
+
+     When the button X goes from HIGH to LOW:
+      bButtonX becomes true
+     When the button X goes from LOW to HIGH:
+      bButtonX becomes false
+
+     We can copy and paste the below block of code in
+     to  So if
+     you want the buttons to function differently
+     depending on if we are in INCREMENT mode or
+     DIAGNOSTIC mode, we can just specify
+
+  */
 
 
 
   // Let's check to see if we have a interface command
   checkInterface();
 
-  
-  if(MODE == 1)
+
+  if (MODE == 1)
   {
     digitalWrite(13, HIGH);
   }
   /*
-   * ============== Incrementing from 0 to radixCeiling ===============
-   */
-  if(MODE == INC_MODE)
+     ============== Incrementing from 0 to radixCeiling ===============
+  */
+  if (MODE == INC_MODE)
   {
 
-    if(bButton1)
+    if (bButton1)
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button1 - 20);
@@ -191,20 +215,20 @@ void loop()
       // Diagnostics mode
       MODE = 2;
       bButton1 = false;
-    }  
-    if(bButton2)
+    }
+    if (bButton2)
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button2 - 20);
       bButton2 = false;
     }
-    if(bButton3)
+    if (bButton3)
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button3 - 20);
       bButton3 = false;
     }
-    if(bButton4)
+    if (bButton4)
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button4 - 20);
@@ -214,37 +238,37 @@ void loop()
 
     updatePortValues(characters[ones]);
     pulseSelectLine(selectD);
-     
-    if((tens != 0) || (hundreds > 0 || thousands > 0))
-    { 
+
+    if ((tens != 0) || (hundreds > 0 || thousands > 0))
+    {
       updatePortValues(characters[tens]);
-      pulseSelectLine(selectC);  
+      pulseSelectLine(selectC);
     }
-    
-    if((hundreds > 0) || thousands > 0)
+
+    if ((hundreds > 0) || thousands > 0)
     {
       updatePortValues(characters[hundreds]);
-      pulseSelectLine(selectB);  
+      pulseSelectLine(selectB);
     }
-  
-    if(thousands > 0)
+
+    if (thousands > 0)
     {
       updatePortValues(characters[thousands]);
       pulseSelectLine(selectA);
     }
-    
-  
-    if(flag)
-    { 
+
+
+    if (flag)
+    {
       // toggle pin for scope to see
       // the timer's clock
-      //PORTD ^= 0b01000000; 
-  
-      
+      //PORTD ^= 0b01000000;
+
+
       flag = false;
 
-    
-      if(ones == radixCeiling)
+
+      if (ones == radixCeiling)
       {
         ones = 0;
         tens++;
@@ -253,17 +277,17 @@ void loop()
       {
         ones++;
       }
-      if(tens == radixCeiling)
+      if (tens == radixCeiling)
       {
         tens = 0;
         hundreds++;
       }
-      if(hundreds == radixCeiling)
+      if (hundreds == radixCeiling)
       {
         hundreds = 0;
         thousands++;
       }
-      if(thousands == radixCeiling)
+      if (thousands == radixCeiling)
       {
         thousands = 0;
       }
@@ -273,11 +297,11 @@ void loop()
 
 
   /*
-   * ============== Decrementing from radixCeiling to 0 ===============
-   */ 
-  else if(MODE == DEC_MODE)
+     ============== Decrementing from radixCeiling to 0 ===============
+  */
+  else if (MODE == DEC_MODE)
   {
-    if(bButton1)
+    if (bButton1)
     {
       Serial.print("DEC_BUTTON - ");
       Serial.println(button1 - 20);
@@ -285,20 +309,20 @@ void loop()
       // Diagnostics mode
       MODE = 2;
       bButton1 = false;
-    }  
-    if(bButton2)
+    }
+    if (bButton2)
     {
       Serial.print("DEC_BUTTON - ");
       Serial.println(button2 - 20);
       bButton2 = false;
     }
-    if(bButton3)
+    if (bButton3)
     {
       Serial.print("DEC_BUTTON - ");
       Serial.println(button3 - 20);
       bButton3 = false;
     }
-    if(bButton4)
+    if (bButton4)
     {
       Serial.print("DEC_BUTTON - ");
       Serial.println(button4 - 20);
@@ -308,37 +332,37 @@ void loop()
 
     updatePortValues(characters[ones]);
     pulseSelectLine(selectD);
-     
-    if((tens != 0) || (hundreds > 0 || thousands > 0))
-    { 
+
+    if ((tens != 0) || (hundreds > 0 || thousands > 0))
+    {
       updatePortValues(characters[tens]);
-      pulseSelectLine(selectC);  
+      pulseSelectLine(selectC);
     }
-    
-    if((hundreds > 0) || thousands > 0)
+
+    if ((hundreds > 0) || thousands > 0)
     {
       updatePortValues(characters[hundreds]);
-      pulseSelectLine(selectB);  
+      pulseSelectLine(selectB);
     }
-  
-    if(thousands > 0)
+
+    if (thousands > 0)
     {
       updatePortValues(characters[thousands]);
       pulseSelectLine(selectA);
     }
-    
-  
-    if(flag)
-    { 
+
+
+    if (flag)
+    {
       // toggle pin for scope to see
       // the timer's clock
-      //PORTD ^= 0b01000000; 
-  
-      
+      //PORTD ^= 0b01000000;
+
+
       flag = false;
 
-    
-      if(ones == 0)
+
+      if (ones == 0)
       {
         ones = radixCeiling;
         tens--;
@@ -347,24 +371,23 @@ void loop()
       {
         ones--;
       }
-      if(tens < 0)
+      if (tens < 0)
       {
         tens = radixCeiling;
         hundreds--;
       }
-      if(hundreds < 0)
+      if (hundreds < 0)
       {
         hundreds = radixCeiling;
         thousands--;
       }
-      if(thousands < 0)
+      if (thousands < 0)
       {
         thousands = radixCeiling;
       }
     }
   }
 
-  
 
 
 
@@ -373,30 +396,31 @@ void loop()
 
 
 
-  
-   /*
-   * ============== Implementing three different diagnostic tests ===============
-   * 
-   *                You can edit the title and anything in the section below
-   */
-  else if(MODE == DIA_MODE)
+
+
+  /*
+    ============== Implementing three different diagnostic tests ===============
+
+                   You can edit the title and anything in the section below
+  */
+  else if (MODE == DIA_MODE)
   {
-  
+
     updatePortValues(characters[13]);
-    pulseSelectLine(selectB);  
+    pulseSelectLine(selectB);
     updatePortValues(0b111001111);
-    pulseSelectLine(selectC);  
+    pulseSelectLine(selectC);
     updatePortValues(characters[10]);
-    pulseSelectLine(selectD);  
+    pulseSelectLine(selectD);
 
 
     // Go back to INC/DEC (MODE SELECT)
-    if(bButton1)
+    if (bButton1)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button1 - 20);
 
-      if(MODE == 1)
+      if (MODE == 1)
       {
         MODE = 0;
       }
@@ -408,18 +432,15 @@ void loop()
     }
 
     // TEST 1
-    if(bButton2)
+    if (bButton2)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button2 - 20);
 
-      // doStuff
-      sequenceOn();
+      diag1();
 
-
-      
       // Go back to INC/DEC (MODE SELECT)
-      if(MODE == 1)
+      if (MODE == 1)
       {
         MODE = 0;
       }
@@ -427,20 +448,20 @@ void loop()
       {
         MODE = 1;
       }
-      
+
       bButton2 = false;
     }
 
     // TEST 2
-    if(bButton3)
+    if (bButton3)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button3 - 20);
 
-      // doStuff
+      diag2();
 
       // Go back to INC/DEC (MODE SELECT)
-      if(MODE == 1)
+      if (MODE == 1)
       {
         MODE = 0;
       }
@@ -448,20 +469,20 @@ void loop()
       {
         MODE = 1;
       }
-      
+
       bButton3 = false;
     }
 
     // TEST 3
-    if(bButton4)
+    if (bButton4)
     {
       Serial.print("DIA_BUTTON - ");
       Serial.println(button4 - 20);
 
-      // doStuff
+      diag3();
 
       // Go back to INC/DEC (MODE SELECT)
-      if(MODE == 1)
+      if (MODE == 1)
       {
         MODE = 0;
       }
@@ -469,15 +490,15 @@ void loop()
       {
         MODE = 1;
       }
-      
+
       bButton4 = false;
-    }    
+    }
   }
-   /*
-   * ============== Implementing three different diagnostic tests ===============
-   * 
-   *                End diagnostics block
-   */
+  /*
+    ============== Implementing three different diagnostic tests ===============
+
+                   End diagnostics block
+  */
 
 
 
@@ -486,10 +507,10 @@ void loop()
 
 
 
-   /*
-   * ============== Interface mode.  Allows display to be completly controlled by serial communication ===============
-   */
-  else if(MODE == INT_MODE)
+  /*
+    ============== Interface mode.  Allows display to be completly controlled by serial communication ===============
+  */
+  else if (MODE == INT_MODE)
   {
     updatePortValues(i_ones);
     pulseSelectLine(selectD);
@@ -499,47 +520,35 @@ void loop()
     pulseSelectLine(selectB);
     updatePortValues(i_thousands);
     pulseSelectLine(selectA);
-     
+
     /*
-    updatePortValues(127);
-    pulseSelectLine(selectB);  
-    updatePortValues(127);
-    pulseSelectLine(selectC);  
-    updatePortValues(127);
-    pulseSelectLine(selectD);  
-    updatePortValues(127);
-    pulseSelectLine(selectA);  
+      updatePortValues(127);
+      pulseSelectLine(selectB);
+      updatePortValues(127);
+      pulseSelectLine(selectC);
+      updatePortValues(127);
+      pulseSelectLine(selectD);
+      updatePortValues(127);
+      pulseSelectLine(selectA);
     */
   }
 }
 
- /*
- * ============== BEGIN Diagnostics Code ===============
- */
+/*
+  ============== BEGIN Diagnostics Code ===============
+*/
 //Aqeel's code
 
-int selectA = 2;   // thousands digit
-int selectB = 3;   // hundreds digit
-int selectC = 4;   // tens digit
-int selectD = 5;   // ones digit
-
-int A = 6;    //          __A__
-int B = 7;    //         |     |
-int C = 8;    //         F     B
-int D = 9;    //         |__G__|
-int E = 10;   //         |     |
-int F = 11;   //         E     C
-int G = 12;   //         |__D__|
-int DP = 13;  //                *DP
-
-#define push1 14
-#define push2 15
-#define push3 16
+int A = 37;    //          __A__
+int B = 36;    //         |     |
+int C = 35;    //         F     B
+int D = 34;    //         |__G__|
+int E = 33;   //          |     |
+int F = 32;   //          E     C
+int G = 31;   //          |__D__|
+int DP = 30;  //                 *DP
 
 int state = 0;
-
-int delaytime = 500;
-int delaytime1 = 1000;
 
 void pickDigit(int digit)    //function to takes in a digit and turn on segments according to the number
 {
@@ -758,71 +767,29 @@ void pickDigit(int digit)    //function to takes in a digit and turn on segments
   }
 }
 
-void allOff() //seperating the 4 digit number into 4 seperate numbers and assign them to the variable
-{
-  digitalWrite(selectA, LOW); //turining all digits off
-  digitalWrite(selectB, LOW);
-  digitalWrite(selectC, LOW);
-  digitalWrite(selectD, LOW);
-}
-
-void setup()
-{
-  pinMode(selectA, OUTPUT);
-  pinMode(selectB, OUTPUT);
-  pinMode(selectC, OUTPUT);
-  pinMode(selectD, OUTPUT);
-
-  pinMode(A, OUTPUT);
-  pinMode(B, OUTPUT);
-  pinMode(C, OUTPUT);
-  pinMode(D, OUTPUT);
-  pinMode(E, OUTPUT);
-  pinMode(F, OUTPUT);
-  pinMode(G, OUTPUT);
-  pinMode(DP, OUTPUT);
-
-  pinMode(14, INPUT);
-  pinMode(15, INPUT);
-  pinMode(16, INPUT);
-
-  Serial.begin(9600);
-
-}
-
-void loop()
+void diag1()
 {
 
-  allOff();
+    selectPinsOff();
 
-  // --------------------------------------------------------------------Diagnostic 1
-  
-  state = digitalRead(push1);  // read input value
-  if (state == HIGH)
-  {
-
-    allOff();
-
-    for (int i = 6 ; i < 14 ; i++)
+    for (int i = 37 ; i > 29 ; i--)
     {
       digitalWrite(i, HIGH);
       delay(delaytime);
     }
 
-    for (int i = 6 ; i < 14 ; i++)
+    for (int i = 37 ; i > 29 ; i--)
     {
       digitalWrite(i, LOW);
       delay(delaytime);
     }
   }
+}
 
-  // --------------------------------------------------------------------Diagnostic 2
+void diag2()
+{
 
-  state = digitalRead(push2);
-  if (state == HIGH)
-  {
-
-    allOff();
+    selectPinsOff();
 
     for (int i = 0 ; i < 17 ; i++)
     {
@@ -835,92 +802,39 @@ void loop()
       pickDigit(j);
       delay(delaytime);
     }
-    allOff();
-  }
-
-  // --------------------------------------------------------------------Diagnostic 3
-
-  state = digitalRead(push3);
-  if (state == HIGH)
-  {
-
-    pickDigit(17);
-    delay(delaytime1);
-    pickDigit(16);
-    delay(delaytime1);
-    pickDigit(17);
-    delay(delaytime1);
-    pickDigit(16);
-    delay(delaytime1);
-    pickDigit(17);
-    delay(delaytime1);
-    pickDigit(16);
-    delay(delaytime1);
-
-  }
+    selectPinsOff();
+  
 }
 
-void portSequence()
-  {
-    int delaytime = 500;
-    PORTC = 255;
-    
-    digitalWrite(37, LOW);
-    delay(delaytime);
-    digitalWrite(36, LOW);
-    delay(delaytime);
-    digitalWrite(35, LOW);
-    delay(delaytime);
-    digitalWrite(34, LOW);
-    delay(delaytime);
-    digitalWrite(33, LOW);
-    delay(delaytime);
-    digitalWrite(32, LOW);
-    delay(delaytime);
-    digitalWrite(31, LOW);
-    delay(delaytime);
-    digitalWrite(30, LOW);
-    delay(delaytime);
-    
-    digitalWrite(37, HIGH);
-    delay(delaytime);
-    digitalWrite(36, HIGH);
-    delay(delaytime);
-    digitalWrite(35, HIGH);
-    delay(delaytime);
-    digitalWrite(34, HIGH);
-    delay(delaytime);
-    digitalWrite(33, HIGH);
-    delay(delaytime);
-    digitalWrite(32, HIGH);
-    delay(delaytime);
-    digitalWrite(31, HIGH);
-    delay(delaytime);
-    digitalWrite(30, HIGH);
-    delay(delaytime);
-    
-  }
-
-void sequenceOn()
+void diag3()
 {
-  selectPinsOn();
-  portSequence();
-  selectPinsOff();
+ 
+    pickDigit(17);
+    delay(delaytime);
+    pickDigit(16);
+    delay(delaytime);
+    pickDigit(17);
+    delay(delaytime);
+    pickDigit(16);
+    delay(delaytime);
+    pickDigit(17);
+    delay(delaytime);
+    pickDigit(16);
+    delay(delaytime);
+ 
 }
- /*
- * ============== END Diagnostics Code ===============
- */
+
+== == == == == == == END Diagnostics Code == == == == == == == =
+  * /
 
 
-
-
-// Interface command parsing
-void checkInterface()
+  // Interface command parsing
+  void checkInterface()
 {
-  if(Serial.available())
+  if (Serial.available())
   {
     char command = Serial.read();
-    if(command == 32)
+    if (command == 32)
     {
       MODE = 3;
       i_ones = 0;
@@ -928,7 +842,7 @@ void checkInterface()
       i_hundreds = 0;
       i_thousands = 0;
     }
-    else if(command == 33)
+    else if (command == 33)
     {
       MODE = 3;
       i_ones = 255;
@@ -936,23 +850,23 @@ void checkInterface()
       i_hundreds = 255;
       i_thousands = 255;
     }
-    else if(command == 34)
+    else if (command == 34)
     {
       sequenceOn();
     }
-    else if(command == 35)
+    else if (command == 35)
     {
       // test 2
     }
-    else if(command == 36)
+    else if (command == 36)
     {
       // test 3
     }
-    else if(command == 37)
+    else if (command == 37)
     {
       MODE = 0;
     }
-    else if(command == 38)
+    else if (command == 38)
     {
       MODE = 1;
     }
@@ -966,14 +880,14 @@ void checkInterface()
 
 
 
- /*
- * ============== Setup Code ===============
- * 
- *     We can review this if you need
- */
+/*
+  ============== Setup Code ===============
+
+      We can review this if you need
+*/
 void setup() {
   Serial.begin(9600);
-  while(!Serial){}
+  while (!Serial) {}
 
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
@@ -982,23 +896,33 @@ void setup() {
   bButton2 = false;
   bButton3 = false;
   bButton4 = false;
-  
+
+  pinMode(A, OUTPUT);
+  pinMode(B, OUTPUT);
+  pinMode(C, OUTPUT);
+  pinMode(D, OUTPUT);
+  pinMode(E, OUTPUT);
+  pinMode(F, OUTPUT);
+  pinMode(G, OUTPUT);
+  pinMode(DP, OUTPUT);
+
+
   tick_rate = Timer_one_second;
-  
+
   radixCeiling = 15;
 
   pulse_delay_ms = 3;
-  
+
   flag = false;
-  
+
   ones = 0;
   tens = 0;
   hundreds = 0;
   thousands = 0;
-  
-  
+
+
   initPorts();
-  initSelectPins();  
+  initSelectPins();
   initButtons();
   initButtonInterrupts();
 
@@ -1019,7 +943,7 @@ void setup() {
 
 
 // Turn the pin 'select' HIGH for the
-// pulse_delay_ms length of time, then 
+// pulse_delay_ms length of time, then
 // turns 'select' back to LOW
 //
 void pulseSelectLine(int select)
@@ -1040,7 +964,7 @@ void pulseSelectLine(int select)
 //    PORTC[6] = character[6]
 //    PORTC[7] = character[7]
 void updatePortValues(char character)
-{  
+{
   PORTC = character;
 }
 
@@ -1061,12 +985,12 @@ void initTimer()
   cSREG = SREG;             // store SREG value
   cli();                    // disable all interrupts
   SREG = cSREG;             // restore SREG value (I-bit)
-    
+
   TCCR1A = 0;               // Zero out the timer control
   TCCR1B = 0;               // registers
 
   TCNT1 = tick_rate;        // preload timer 65536-16MHz/256/1Hz
-  TCCR1B |= (1 << CS12);    // 256 prescaler 
+  TCCR1B |= (1 << CS12);    // 256 prescaler
   TIMSK1 |= (1 << TOIE1);   // enable timer overflow interrupt
   sei();                    // enable all interrupts
 
@@ -1101,11 +1025,11 @@ void selectPinsOn()
   digitalWrite(selectA, HIGH);
 }
 void initButtons()
-{ 
-  pinMode(button1, INPUT_PULLUP);  
-  pinMode(button2, INPUT_PULLUP);  
-  pinMode(button3, INPUT_PULLUP);  
-  pinMode(button4, INPUT_PULLUP);  
+{
+  pinMode(button1, INPUT_PULLUP);
+  pinMode(button2, INPUT_PULLUP);
+  pinMode(button3, INPUT_PULLUP);
+  pinMode(button4, INPUT_PULLUP);
 }
 void initButtonInterrupts()
 {
