@@ -7,6 +7,31 @@
  */
 
 /*
+ * Pin mappings
+ *  
+ 
+L1    - 50
+L2    - 51
+L3    - 52
+L4    - 53
+A     - 37
+B     - 36
+C     - 35
+D     - 34
+E     - 33
+F     - 32
+G     - 31
+Dp    - 30
+button1 - 21
+button2 - 20
+button3 - 19
+button4 - 18
+
+*/
+
+
+
+/*
  * ============== Making numbers that don't change human readable ===============
  */
 // Making pin numbers human readable
