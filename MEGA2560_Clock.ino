@@ -823,7 +823,7 @@ void diag3()
     delay(delaytime);
  
 }
-
+/*
 == == == == == == == END Diagnostics Code == == == == == == == =
   * /
 
