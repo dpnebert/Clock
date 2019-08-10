@@ -7,11 +7,12 @@ ControlP5 allOnButton;
 ControlP5 allOffButton;
 ControlP5 increment;
 ControlP5 decrement;
-ControlP5 incrementSeg;
-ControlP5 decrementSeg;
 ControlP5 diagnosticTest1;
 ControlP5 diagnosticTest2;
 ControlP5 diagnosticTest3;
+ControlP5 startStopButton;
+ControlP5 resetButton;
+ControlP5 directionButton;
 
 
 ControlP5 segmentA;
@@ -35,31 +36,35 @@ void setup()
   allOffButton = new ControlP5(this);
   increment = new ControlP5(this);
   decrement = new ControlP5(this);
-  incrementSeg = new ControlP5(this);
-  decrementSeg = new ControlP5(this);
   diagnosticTest1 = new ControlP5(this);
   diagnosticTest2 = new ControlP5(this);
   diagnosticTest3 = new ControlP5(this);
+  startStopButton = new ControlP5(this);
+  resetButton = new ControlP5(this);
+  directionButton = new ControlP5(this);
   
   segmentA = new ControlP5(this);
   segmentB = new ControlP5(this);
   segmentC = new ControlP5(this);
   segmentD = new ControlP5(this);
-  font = createFont("calibri light", 11);
+  font = createFont("calibri light", 18);
   
-  drawDecrementSeg(200, 400, 100, 150);
-  drawIncrementSeg(400, 400, 100, 150);
   
-  drawDecrement(200, 525, 100, 150);
-  drawIncrement(400, 525, 100, 150);
+  drawDiagnosticTest1(200, 650, 100, 150);
   
-  drawAllOnButton(200, 650, 100, 150);
-  drawAllOffButton(400, 650, 100, 150);
+  drawIncrement(400, 400, 100, 150);
+  drawDecrement(400, 525, 100, 150);
+  drawDiagnosticTest2(400, 650, 100, 150);
   
-  drawDiagnosticTest1(600, 400, 100, 150);
-  drawDiagnosticTest2(600, 525, 100, 150);
+  drawAllOnButton(600, 400, 100, 150);
+  drawAllOffButton(600, 525, 100, 150);  
   drawDiagnosticTest3(600, 650, 100, 150);
   
+  
+  drawStartStopButton(600, 400, 100, 150);
+  drawResetButton(600, 525, 100, 150);  
+  
+  font = createFont("calibri light", 11);
   
   draw7segDp_1(920, 100, 80, 40, 80, 40);
   draw7segDp_2(680, 100, 80, 40, 80, 40);
@@ -120,19 +125,14 @@ void decrement()
   port.write(38);
 }
 
-void incrementSeg()
+void startStop()
 {
   port.write(39);
 }
-void decrementSeg()
+void reset()
 {
   port.write(40);
 }
-
-
-
-
-
 
 
 
@@ -364,7 +364,23 @@ void drawDiagnosticTest3(int xStart, int yStart, int height, int width)
     ;
 }
 
+void drawStartStopButton(int xStart, int yStart, int height, int width)
+{
+  allOnButton.addButton("startStop")
+    .setPosition(xStart, yStart)
+    .setSize(width, height)
+    .setFont(font)
+    ;
+}
 
+void drawResetButton(int xStart, int yStart, int height, int width)
+{
+  allOnButton.addButton("reset")
+    .setPosition(xStart, yStart)
+    .setSize(width, height)
+    .setFont(font)
+    ;
+}
 
 
 
