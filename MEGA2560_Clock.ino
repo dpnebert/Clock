@@ -84,22 +84,22 @@ static int MODE = 0;
 
                           //   D
                           //   pGFEDCBA
-const char characters[16]= { 0b11000000, //0
-                             0b11111001, //1
-                             0b10100100, //2
-                             0b10110000, //3
-                             0b10011001, //4
-                             0b10010010, //5
-                             0b10000010, //6
-                             0b11111000, //7
-                             0b10000000, //8
-                             0b10011000, //9
-                             0b10001000, //A
-                             0b10000011, //B
-                             0b11000110, //C
-                             0b10100001, //D
-                             0b10000110, //E
-                             0b10001110  //F
+const char characters[16]= { (char)0b11000000, //0
+                             (char)0b11111001, //1
+                             (char)0b10100100, //2
+                             (char)0b10110000, //3
+                             (char)0b10011001, //4
+                             (char)0b10010010, //5
+                             (char)0b10000010, //6
+                             (char)0b11111000, //7
+                             (char)0b10000000, //8
+                             (char)0b10011000, //9
+                             (char)0b10001000, //A
+                             (char)0b10000011, //B
+                             (char)0b11000110, //C
+                             (char)0b10100001, //D
+                             (char)0b10000110, //E
+                             (char)0b10001110  //F
                            };
                        
 const char displays[] = { selectA,
@@ -125,7 +125,7 @@ const char displays[] = { selectA,
 // for longer delays, modify formula:
 // 3036 = 65536 - (16MHz/256/1Hz)
 // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
-const uint8_t tcnt_one_second = 3036;
+const int tcnt_one_second = 3036;
 
 // The internal interrupt will count to Timer_one_second
 // and set the boolean variable 'flag' to true
@@ -162,6 +162,34 @@ bool bButton1;
 bool bButton2;
 bool bButton3;
 bool bButton4;
+
+
+
+
+
+
+// Aqeel's code
+int A = 37;    //          __A__
+int B = 36;    //         |     |
+int C = 35;    //         F     B
+int D = 34;    //         |__G__|
+int E = 33;   //          |     |
+int F = 32;   //          E     C
+int G = 31;   //          |__D__|
+int DP = 30;  //                 *DP
+
+int state = 0;
+int delaytime = 500;
+// Aqeel's code
+
+
+
+
+
+
+
+
+
 
 /*
  * ============== ===============
@@ -407,7 +435,7 @@ void loop()
   
     updatePortValues(characters[13]);
     pulseSelectLine(selectB);  
-    updatePortValues(0b111001111);
+    updatePortValues(0b11101111);
     pulseSelectLine(selectC);  
     updatePortValues(characters[10]);
     pulseSelectLine(selectD);  
@@ -437,7 +465,7 @@ void loop()
       Serial.println(button2 - 20);
 
       // doStuff
-      sequenceOn();
+      diag1();
 
 
       
@@ -541,54 +569,6 @@ void loop()
  */
 //Aqeel's code
 
-void portSequence()
-  {
-    int delaytime = 500;
-    PORTC = 255;
-    
-    digitalWrite(37, LOW);
-    delay(delaytime);
-    digitalWrite(36, LOW);
-    delay(delaytime);
-    digitalWrite(35, LOW);
-    delay(delaytime);
-    digitalWrite(34, LOW);
-    delay(delaytime);
-    digitalWrite(33, LOW);
-    delay(delaytime);
-    digitalWrite(32, LOW);
-    delay(delaytime);
-    digitalWrite(31, LOW);
-    delay(delaytime);
-    digitalWrite(30, LOW);
-    delay(delaytime);
-    
-    digitalWrite(37, HIGH);
-    delay(delaytime);
-    digitalWrite(36, HIGH);
-    delay(delaytime);
-    digitalWrite(35, HIGH);
-    delay(delaytime);
-    digitalWrite(34, HIGH);
-    delay(delaytime);
-    digitalWrite(33, HIGH);
-    delay(delaytime);
-    digitalWrite(32, HIGH);
-    delay(delaytime);
-    digitalWrite(31, HIGH);
-    delay(delaytime);
-    digitalWrite(30, HIGH);
-    delay(delaytime);
-
-    
-  }
-
-void sequenceOn()
-{
-  selectPinsOn();
-  portSequence();
-  selectPinsOff();
-}
  /*
  * ============== END Diagnostics Code ===============
  */
@@ -620,7 +600,7 @@ void checkInterface()
     }
     else if(command == 34)
     {
-      sequenceOn();
+      diag1();
     }
     else if(command == 35)
     {
@@ -637,6 +617,130 @@ void checkInterface()
     else if(command == 38)
     {
       MODE = 1;
+    }
+
+
+    else if(command == 'a')
+    {
+      updatePortValues(0b1111110);
+      pulseSelectLine(4);
+      
+    }
+    else if(command == 'b')
+    {
+      
+    }
+    else if(command == 'c')
+    {
+      
+    }
+    else if(command == 'd')
+    {
+      
+    }
+    else if(command == 'e')
+    {
+      
+    }
+    else if(command == 'f')
+    {
+      
+    }
+    else if(command == 'g')
+    {
+      
+    }
+    else if(command == 'h')
+    {
+      
+    }
+    else if(command == 'i')
+    {
+      
+    }
+    else if(command == 'j')
+    {
+      
+    }
+    else if(command == 'k')
+    {
+      
+    }
+    else if(command == 'l')
+    {
+      
+    }
+    else if(command == 'm')
+    {
+      
+    }
+    else if(command == 'n')
+    {
+      
+    }
+    else if(command == 'o')
+    {
+      
+    }
+    else if(command == 'p')
+    {
+      
+    }
+    else if(command == 'q')
+    {
+      
+    }
+    else if(command == 'r')
+    {
+      
+    }
+    else if(command == 's')
+    {
+      
+    }
+    else if(command == 't')
+    {
+      
+    }
+    else if(command == 'u')
+    {
+      
+    }
+    else if(command == 'v')
+    {
+      
+    }
+    else if(command == 'w')
+    {
+      
+    }
+    else if(command == 'x')
+    {
+      
+    }
+    else if(command == 'y')
+    {
+      
+    }
+    else if(command == 'z')
+    {
+      
+    }
+    else if(command == '{')
+    {
+      
+    }
+    else if(command == '|')
+    {
+      
+    }
+    else if(command == '}')
+    {
+      
+    }
+    else if(command == '~')
+    {
+      
     }
   }
 }
@@ -821,3 +925,307 @@ void setNumber(int th, int h, int te, int o)
   thousands = th;
   flag = true;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void allSegmentsOff()
+{
+  PORTC = 255;
+}
+
+ /*
+ * ============== BEGIN Diagnostics Code ===============
+ */
+//Aqeel's code
+void diag1()
+{
+
+    selectPinsOn();
+    allSegmentsOff();
+    for (int i = 37 ; i > 29 ; i--)
+    {
+      digitalWrite(i, LOW);
+      delay(delaytime);
+    }
+    for (int i = 37 ; i > 29 ; i--)
+    {
+      digitalWrite(i, HIGH);
+      delay(delaytime);
+    }  
+    selectPinsOff();
+}
+
+void diag2()
+{
+    selectPinsOn();
+    allSegmentsOff();
+    for (int i = 0 ; i < 17 ; i++)
+    {
+      pickDigit(i);
+      delay(delaytime);
+    }
+    for (int j = 16 ; j >= -1 ; j--)
+    {
+      pickDigit(j);
+      delay(delaytime);
+    }
+    selectPinsOff();  
+}
+
+void diag3()
+{ 
+    selectPinsOn();
+    pickDigit(17);
+    delay(delaytime);
+    pickDigit(16);
+    delay(delaytime);
+    pickDigit(17);
+    delay(delaytime);
+    pickDigit(16);
+    delay(delaytime);
+    pickDigit(17);
+    delay(delaytime);
+    pickDigit(16);
+    delay(delaytime); 
+    selectPinsOff();
+}
+
+void pickDigit(int digit)    //function to takes in a digit and turn on segments according to the number
+{
+  switch (digit)
+  {
+    case 0:
+      digitalWrite(A, LOW);   // Turning segment A on
+      digitalWrite(B, LOW);   // Turning segment B on
+      digitalWrite(C, LOW);   // Turning segment C on
+      digitalWrite(D, LOW);   // Turning segment D on
+      digitalWrite(E, LOW);   // Turning segment E on
+      digitalWrite(F, LOW);   // Turning segment F on
+      digitalWrite(G, HIGH);  // Turning segment G OFF
+      digitalWrite(DP, HIGH);  // Turning segment DP OFF
+      break;
+
+    case 1:
+      digitalWrite(A, HIGH);
+      digitalWrite(B, LOW);
+      digitalWrite(C, LOW);
+      digitalWrite(D, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(DP, HIGH);
+      break;
+
+    case 2:
+      digitalWrite(A, LOW);
+      digitalWrite(B, LOW);
+      digitalWrite(C, HIGH);
+      digitalWrite(D, LOW);
+      digitalWrite(E, LOW);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, HIGH);
+      break;
+
+    case 3:
+      digitalWrite(A, LOW);
+      digitalWrite(B, LOW);
+      digitalWrite(C, LOW);
+      digitalWrite(D, LOW);
+      digitalWrite(E, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, HIGH);
+      break;
+
+    case 4:
+      digitalWrite(A, HIGH);
+      digitalWrite(B, LOW);
+      digitalWrite(C, LOW);
+      digitalWrite(D, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, HIGH);
+
+      break;
+
+    case 5:
+      digitalWrite(A, LOW);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, LOW);
+      digitalWrite(D, LOW);
+      digitalWrite(E, HIGH);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, HIGH);
+      break;
+
+    case 6:
+      digitalWrite(A, LOW);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, LOW);
+      digitalWrite(D, LOW);
+      digitalWrite(E, LOW);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, HIGH);
+      break;
+
+    case 7:
+      digitalWrite(A, LOW);
+      digitalWrite(B, LOW);
+      digitalWrite(C, LOW);
+      digitalWrite(D, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(DP, HIGH);
+      break;
+
+    case 8:
+      digitalWrite(A, LOW);
+      digitalWrite(B, LOW);
+      digitalWrite(C, LOW);
+      digitalWrite(D, LOW);
+      digitalWrite(E, LOW);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, HIGH);
+      break;
+
+    case 9:
+      digitalWrite(A, LOW);
+      digitalWrite(B, LOW);
+      digitalWrite(C, LOW);
+      digitalWrite(D, LOW);
+      digitalWrite(E, HIGH);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, HIGH);
+      break;
+
+    case 10: // A
+      digitalWrite(A, LOW);
+      digitalWrite(B, LOW);
+      digitalWrite(C, LOW);
+      digitalWrite(D, HIGH);
+      digitalWrite(E, LOW);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, LOW);
+      break;
+
+    case 11: // B
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, LOW);
+      digitalWrite(D, LOW);
+      digitalWrite(E, LOW);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, LOW);
+      break;
+
+    case 12: // C
+      digitalWrite(A, LOW);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      digitalWrite(D, LOW);
+      digitalWrite(E, LOW);
+      digitalWrite(F, LOW);
+      digitalWrite(G, HIGH);
+      digitalWrite(DP, LOW);
+      break;
+
+    case 13: // D
+      digitalWrite(A, HIGH);
+      digitalWrite(B, LOW);
+      digitalWrite(C, LOW);
+      digitalWrite(D, LOW);
+      digitalWrite(E, LOW);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, LOW);
+      break;
+
+    case 14: // E
+      digitalWrite(A, LOW);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      digitalWrite(D, LOW);
+      digitalWrite(E, LOW);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, LOW);
+      break;
+
+    case 15: // F
+      digitalWrite(A, LOW);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(E, LOW);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, LOW);
+      break;
+
+    case 16: // all off
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(DP, HIGH);
+      break;
+
+    case 17: // all on
+      digitalWrite(A, LOW);
+      digitalWrite(B, LOW);
+      digitalWrite(C, LOW);
+      digitalWrite(D, LOW);
+      digitalWrite(E, LOW);
+      digitalWrite(F, LOW);
+      digitalWrite(G, LOW);
+      digitalWrite(DP, LOW);
+      break;
+
+      default:
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(DP, HIGH);
+      break;
+
+  }
+}
+
+
+
+
+ /*
+ * ============== END Diagnostics Code ===============
+ */
