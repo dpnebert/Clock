@@ -264,24 +264,24 @@ void loop()
 
 
     updatePortValues(characters[ones]);
-    pulseSelectLine(selectD);
+    pulseSelectLine(selectD, pulse_delay_ms);
      
     if((tens != 0) || (hundreds > 0 || thousands > 0))
     { 
       updatePortValues(characters[tens]);
-      pulseSelectLine(selectC);  
+      pulseSelectLine(selectC, pulse_delay_ms);  
     }
     
     if((hundreds > 0) || thousands > 0)
     {
       updatePortValues(characters[hundreds]);
-      pulseSelectLine(selectB);  
+      pulseSelectLine(selectB, pulse_delay_ms);  
     }
   
     if(thousands > 0)
     {
       updatePortValues(characters[thousands]);
-      pulseSelectLine(selectA);
+      pulseSelectLine(selectA, pulse_delay_ms);
     }
     
   
@@ -358,24 +358,24 @@ void loop()
 
 
     updatePortValues(characters[ones]);
-    pulseSelectLine(selectD);
+    pulseSelectLine(selectD, pulse_delay_ms);
      
     if((tens != 0) || (hundreds > 0 || thousands > 0))
     { 
       updatePortValues(characters[tens]);
-      pulseSelectLine(selectC);  
+      pulseSelectLine(selectC, pulse_delay_ms);  
     }
     
     if((hundreds > 0) || thousands > 0)
     {
       updatePortValues(characters[hundreds]);
-      pulseSelectLine(selectB);  
+      pulseSelectLine(selectB, pulse_delay_ms);  
     }
   
     if(thousands > 0)
     {
       updatePortValues(characters[thousands]);
-      pulseSelectLine(selectA);
+      pulseSelectLine(selectA, pulse_delay_ms);
     }
     
   
@@ -434,11 +434,11 @@ void loop()
   {
   
     updatePortValues(characters[13]);
-    pulseSelectLine(selectB);  
+    pulseSelectLine(selectB, pulse_delay_ms);  
     updatePortValues(0b11101111);
-    pulseSelectLine(selectC);  
+    pulseSelectLine(selectC, pulse_delay_ms);  
     updatePortValues(characters[10]);
-    pulseSelectLine(selectD);  
+    pulseSelectLine(selectD, pulse_delay_ms);  
 
 
     // Go back to INC/DEC (MODE SELECT)
@@ -543,13 +543,13 @@ void loop()
   else if(MODE == INT_MODE)
   {
     updatePortValues(i_ones);
-    pulseSelectLine(selectD);
+    pulseSelectLine(selectD, pulse_delay_ms);
     updatePortValues(i_tens);
-    pulseSelectLine(selectC);
+    pulseSelectLine(selectC, pulse_delay_ms);
     updatePortValues(i_hundreds);
-    pulseSelectLine(selectB);
+    pulseSelectLine(selectB, pulse_delay_ms);
     updatePortValues(i_thousands);
-    pulseSelectLine(selectA);
+    pulseSelectLine(selectA, pulse_delay_ms);
      
     /*
     updatePortValues(127);
@@ -622,8 +622,12 @@ void checkInterface()
 
     else if(command == 'a')
     {
-      updatePortValues(0b1111110);
-      pulseSelectLine(4);
+      for(int i = 0; i < 1000; i++)
+      {
+        updatePortValues(0b1111110);
+        pulseSelectLine(4, pulse_delay_ms);
+      }
+      
       
     }
     else if(command == 'b')
@@ -808,10 +812,10 @@ void setup() {
 // pulse_delay_ms length of time, then 
 // turns 'select' back to LOW
 //
-void pulseSelectLine(int select)
+void pulseSelectLine(int select, int ms)
 {
   digitalWrite(select, HIGH);
-  delay(pulse_delay_ms);
+  delay(ms);
   digitalWrite(select, LOW);
 }
 
