@@ -84,22 +84,22 @@ static int MODE = 0;
 
                           //   D
                           //   pGFEDCBA
-const char characters[16]= { 0b11000000, //0
-                             0b11111001, //1
-                             0b10100100, //2
-                             0b10110000, //3
-                             0b10011001, //4
-                             0b10010010, //5
-                             0b10000010, //6
-                             0b11111000, //7
-                             0b10000000, //8
-                             0b10011000, //9
-                             0b10001000, //A
-                             0b10000011, //B
-                             0b11000110, //C
-                             0b10100001, //D
-                             0b10000110, //E
-                             0b10001110  //F
+const char characters[16]= { (char)0b11000000, //0
+                             (char)0b11111001, //1
+                             (char)0b10100100, //2
+                             (char)0b10110000, //3
+                             (char)0b10011001, //4
+                             (char)0b10010010, //5
+                             (char)0b10000010, //6
+                             (char)0b11111000, //7
+                             (char)0b10000000, //8
+                             (char)0b10011000, //9
+                             (char)0b10001000, //A
+                             (char)0b10000011, //B
+                             (char)0b11000110, //C
+                             (char)0b10100001, //D
+                             (char)0b10000110, //E
+                             (char)0b10001110  //F
                            };
                        
 const char displays[] = { selectA,
@@ -125,7 +125,7 @@ const char displays[] = { selectA,
 // for longer delays, modify formula:
 // 3036 = 65536 - (16MHz/256/1Hz)
 // http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
-const uint8_t tcnt_one_second = 3036;
+const int tcnt_one_second = 3036;
 
 // The internal interrupt will count to Timer_one_second
 // and set the boolean variable 'flag' to true
@@ -165,6 +165,9 @@ bool bButton4;
 
 
 
+
+
+
 // Aqeel's code
 int A = 37;    //          __A__
 int B = 36;    //         |     |
@@ -185,8 +188,11 @@ int delaytime = 500;
 
 
 
+
+
+
 /*
- * ============== This is where the action starts ===============
+ * ============== ===============
  */
 void loop()
 {
@@ -213,6 +219,15 @@ void loop()
    */
 
 
+
+  // Let's check to see if we have a interface command
+  checkInterface();
+
+  
+  if(MODE == 1)
+  {
+    digitalWrite(13, HIGH);
+  }
   /*
    * ============== Incrementing from 0 to radixCeiling ===============
    */
@@ -420,7 +435,7 @@ void loop()
   
     updatePortValues(characters[13]);
     pulseSelectLine(selectB);  
-    updatePortValues(0b111001111);
+    updatePortValues(0b11101111);
     pulseSelectLine(selectC);  
     updatePortValues(characters[10]);
     pulseSelectLine(selectD);  
@@ -474,7 +489,6 @@ void loop()
       Serial.println(button3 - 20);
 
       // doStuff
-      diag2();
 
       // Go back to INC/DEC (MODE SELECT)
       if(MODE == 1)
@@ -496,7 +510,6 @@ void loop()
       Serial.println(button4 - 20);
 
       // doStuff
-      diag3();
 
       // Go back to INC/DEC (MODE SELECT)
       if(MODE == 1)
@@ -549,22 +562,12 @@ void loop()
     pulseSelectLine(selectA);  
     */
   }
-
-
-
-  
-  // Let's check to see if we have a interface command
-  checkInterface();
-
-
-  
 }
 
  /*
  * ============== BEGIN Diagnostics Code ===============
  */
 //Aqeel's code
-
 
  /*
  * ============== END Diagnostics Code ===============
@@ -601,11 +604,11 @@ void checkInterface()
     }
     else if(command == 35)
     {
-      diag2();
+      // test 2
     }
     else if(command == 36)
     {
-      diag3();
+      // test 3
     }
     else if(command == 37)
     {
@@ -615,60 +618,131 @@ void checkInterface()
     {
       MODE = 1;
     }
+
+
+    else if(command == 'a')
+    {
+      updatePortValues(0b1111110);
+      pulseSelectLine(4);
+      
+    }
+    else if(command == 'b')
+    {
+      
+    }
+    else if(command == 'c')
+    {
+      
+    }
+    else if(command == 'd')
+    {
+      
+    }
+    else if(command == 'e')
+    {
+      
+    }
+    else if(command == 'f')
+    {
+      
+    }
+    else if(command == 'g')
+    {
+      
+    }
+    else if(command == 'h')
+    {
+      
+    }
+    else if(command == 'i')
+    {
+      
+    }
+    else if(command == 'j')
+    {
+      
+    }
+    else if(command == 'k')
+    {
+      
+    }
+    else if(command == 'l')
+    {
+      
+    }
+    else if(command == 'm')
+    {
+      
+    }
+    else if(command == 'n')
+    {
+      
+    }
+    else if(command == 'o')
+    {
+      
+    }
+    else if(command == 'p')
+    {
+      
+    }
+    else if(command == 'q')
+    {
+      
+    }
+    else if(command == 'r')
+    {
+      
+    }
+    else if(command == 's')
+    {
+      
+    }
+    else if(command == 't')
+    {
+      
+    }
+    else if(command == 'u')
+    {
+      
+    }
+    else if(command == 'v')
+    {
+      
+    }
+    else if(command == 'w')
+    {
+      
+    }
+    else if(command == 'x')
+    {
+      
+    }
+    else if(command == 'y')
+    {
+      
+    }
+    else if(command == 'z')
+    {
+      
+    }
+    else if(command == '{')
+    {
+      
+    }
+    else if(command == '|')
+    {
+      
+    }
+    else if(command == '}')
+    {
+      
+    }
+    else if(command == '~')
+    {
+      
+    }
   }
-}
-
-void diag1()
-{
-
-    selectPinsOn();
-    allSegmentsOff();
-    for (int i = 37 ; i > 29 ; i--)
-    {
-      digitalWrite(i, LOW);
-      delay(delaytime);
-    }
-    for (int i = 37 ; i > 29 ; i--)
-    {
-      digitalWrite(i, HIGH);
-      delay(delaytime);
-    }  
-    selectPinsOff();
-}
-
-void diag2()
-{
-    selectPinsOn();
-    allSegmentsOff();
-    for (int i = 0 ; i < 17 ; i++)
-    {
-      pickDigit(i);
-      delay(delaytime);
-    }
-    for (int j = 16 ; j >= -1 ; j--)
-    {
-      pickDigit(j);
-      delay(delaytime);
-    }
-    selectPinsOff();  
-}
-
-void diag3()
-{ 
-    selectPinsOn();
-    pickDigit(17);
-    delay(delaytime);
-    pickDigit(16);
-    delay(delaytime);
-    pickDigit(17);
-    delay(delaytime);
-    pickDigit(16);
-    delay(delaytime);
-    pickDigit(17);
-    delay(delaytime);
-    pickDigit(16);
-    delay(delaytime); 
-    selectPinsOff();
 }
 
 
@@ -854,16 +928,83 @@ void setNumber(int th, int h, int te, int o)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void allSegmentsOff()
 {
   PORTC = 255;
 }
 
+ /*
+ * ============== BEGIN Diagnostics Code ===============
+ */
+//Aqeel's code
+void diag1()
+{
 
+    selectPinsOn();
+    allSegmentsOff();
+    for (int i = 37 ; i > 29 ; i--)
+    {
+      digitalWrite(i, LOW);
+      delay(delaytime);
+    }
+    for (int i = 37 ; i > 29 ; i--)
+    {
+      digitalWrite(i, HIGH);
+      delay(delaytime);
+    }  
+    selectPinsOff();
+}
 
+void diag2()
+{
+    selectPinsOn();
+    allSegmentsOff();
+    for (int i = 0 ; i < 17 ; i++)
+    {
+      pickDigit(i);
+      delay(delaytime);
+    }
+    for (int j = 16 ; j >= -1 ; j--)
+    {
+      pickDigit(j);
+      delay(delaytime);
+    }
+    selectPinsOff();  
+}
 
-
-
+void diag3()
+{ 
+    selectPinsOn();
+    pickDigit(17);
+    delay(delaytime);
+    pickDigit(16);
+    delay(delaytime);
+    pickDigit(17);
+    delay(delaytime);
+    pickDigit(16);
+    delay(delaytime);
+    pickDigit(17);
+    delay(delaytime);
+    pickDigit(16);
+    delay(delaytime); 
+    selectPinsOff();
+}
 
 void pickDigit(int digit)    //function to takes in a digit and turn on segments according to the number
 {
@@ -1081,3 +1222,10 @@ void pickDigit(int digit)    //function to takes in a digit and turn on segments
 
   }
 }
+
+
+
+
+ /*
+ * ============== END Diagnostics Code ===============
+ */
