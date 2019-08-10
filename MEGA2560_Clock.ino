@@ -150,6 +150,9 @@ int tens;
 int hundreds;
 int thousands;
 
+// Are we currently counting?
+bool bCounting;
+
 
 // Variables to hold the bit patterns to use in interface mode
 int i_ones;
@@ -239,18 +242,31 @@ void loop()
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button2 - 20);
+
+      bCounting = !bCounting;
+      
       bButton2 = false;
     }
     if(bButton3)
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button3 - 20);
+
+      ones = 0;
+      tens = 0;
+      hundreds = 0;
+      thousands = 0;
+      
       bButton3 = false;
     }
     if(bButton4)
     {
       Serial.print("INC_BUTTON - ");
       Serial.println(button4 - 20);
+
+      
+      MODE = DEC_MODE;
+      
       bButton4 = false;
     }
 
@@ -278,29 +294,34 @@ void loop()
     
   
     if(flag)
-    {       
-      flag = false;
-
-      ones++;
-    
-      if(ones > radixCeiling)
+    {
+      if(bCounting)
       {
-        ones = 0;
-        tens++;
-      }
-      if(tens > radixCeiling)
-      {
-        tens = 0;
-        hundreds++;
-      }
-      if(hundreds > radixCeiling)
-      {
-        hundreds = 0;
-        thousands++;
-      }
-      if(thousands > radixCeiling)
-      {
-        thousands = 0;
+               
+      
+        flag = false;
+  
+        ones++;
+      
+        if(ones > radixCeiling)
+        {
+          ones = 0;
+          tens++;
+        }
+        if(tens > radixCeiling)
+        {
+          tens = 0;
+          hundreds++;
+        }
+        if(hundreds > radixCeiling)
+        {
+          hundreds = 0;
+          thousands++;
+        }
+        if(thousands > radixCeiling)
+        {
+          thousands = 0;
+        }
       }
     }
   }
@@ -325,18 +346,31 @@ void loop()
     {
       Serial.print("DEC_BUTTON - ");
       Serial.println(button2 - 20);
+
+      bCounting = !bCounting;
+      
       bButton2 = false;
     }
     if(bButton3)
     {
       Serial.print("DEC_BUTTON - ");
       Serial.println(button3 - 20);
+
+      
+      ones = 0;
+      tens = 0;
+      hundreds = 0;
+      thousands = 0;
+      
       bButton3 = false;
     }
     if(bButton4)
     {
       Serial.print("DEC_BUTTON - ");
       Serial.println(button4 - 20);
+
+      MODE = INC_MODE;
+      
       bButton4 = false;
     }
 
@@ -365,30 +399,35 @@ void loop()
   
     if(flag)
     {      
-      flag = false;
-    
-      if(ones == 0)
+      if(bCounting)
       {
-        ones = radixCeiling;
-        tens--;
-      }
-      else
-      {
-        ones--;
-      }
-      if(tens < 0)
-      {
-        tens = radixCeiling;
-        hundreds--;
-      }
-      if(hundreds < 0)
-      {
-        hundreds = radixCeiling;
-        thousands--;
-      }
-      if(thousands < 0)
-      {
-        thousands = radixCeiling;
+        
+      
+        flag = false;
+      
+        if(ones == 0)
+        {
+          ones = radixCeiling;
+          tens--;
+        }
+        else
+        {
+          ones--;
+        }
+        if(tens < 0)
+        {
+          tens = radixCeiling;
+          hundreds--;
+        }
+        if(hundreds < 0)
+        {
+          hundreds = radixCeiling;
+          thousands--;
+        }
+        if(thousands < 0)
+        {
+          thousands = radixCeiling;
+        }
       }
     }
   }
@@ -891,6 +930,8 @@ void setup() {
   tens = 0;
   hundreds = 0;
   thousands = 0;
+
+  bCounting = true;
   
   i_ones = 0b11111110;
   i_tens = 255;
