@@ -82,8 +82,8 @@ static int MODE = 0;
 
 
 
-                          //   D
-                          //   pGFEDCBA
+                               //   D
+                               //   pGFEDCBA
 const char characters[16]= { (char)0b11000000, //0
                              (char)0b11111001, //1
                              (char)0b10100100, //2
@@ -219,15 +219,7 @@ void loop()
    */
 
 
-
-  // Let's check to see if we have a interface command
-  checkInterface();
-
   
-  if(MODE == 1)
-  {
-    digitalWrite(13, HIGH);
-  }
   /*
    * ============== Incrementing from 0 to radixCeiling ===============
    */
@@ -286,35 +278,27 @@ void loop()
     
   
     if(flag)
-    { 
-      // toggle pin for scope to see
-      // the timer's clock
-      //PORTD ^= 0b01000000; 
-  
-      
+    {       
       flag = false;
 
+      ones++;
     
-      if(ones == radixCeiling)
+      if(ones > radixCeiling)
       {
         ones = 0;
         tens++;
       }
-      else
-      {
-        ones++;
-      }
-      if(tens == radixCeiling)
+      if(tens > radixCeiling)
       {
         tens = 0;
         hundreds++;
       }
-      if(hundreds == radixCeiling)
+      if(hundreds > radixCeiling)
       {
         hundreds = 0;
         thousands++;
       }
-      if(thousands == radixCeiling)
+      if(thousands > radixCeiling)
       {
         thousands = 0;
       }
@@ -380,14 +364,8 @@ void loop()
     
   
     if(flag)
-    { 
-      // toggle pin for scope to see
-      // the timer's clock
-      //PORTD ^= 0b01000000; 
-  
-      
+    {      
       flag = false;
-
     
       if(ones == 0)
       {
@@ -418,12 +396,6 @@ void loop()
   
 
 
-
-
-
-
-
-
   
    /*
    * ============== Implementing three different diagnostic tests ===============
@@ -432,6 +404,7 @@ void loop()
    */
   else if(MODE == DIA_MODE)
   {
+    
   
     updatePortValues(characters[13]);
     pulseSelectLine(selectB, pulse_delay_ms);  
@@ -489,6 +462,7 @@ void loop()
       Serial.println(button3 - 20);
 
       // doStuff
+      diag2();
 
       // Go back to INC/DEC (MODE SELECT)
       if(MODE == 1)
@@ -510,6 +484,7 @@ void loop()
       Serial.println(button4 - 20);
 
       // doStuff
+      diag3();
 
       // Go back to INC/DEC (MODE SELECT)
       if(MODE == 1)
@@ -550,41 +525,35 @@ void loop()
     pulseSelectLine(selectB, pulse_delay_ms);
     updatePortValues(i_thousands);
     pulseSelectLine(selectA, pulse_delay_ms);
-     
-    /*
-    updatePortValues(127);
-    pulseSelectLine(selectB);  
-    updatePortValues(127);
-    pulseSelectLine(selectC);  
-    updatePortValues(127);
-    pulseSelectLine(selectD);  
-    updatePortValues(127);
-    pulseSelectLine(selectA);  
-    */
-  }
+  }  
+
+  // Let's check to see if we have a interface command
+  checkInterface();
+
 }
 
- /*
- * ============== BEGIN Diagnostics Code ===============
- */
-//Aqeel's code
-
- /*
- * ============== END Diagnostics Code ===============
- */
 
 
-
+char segA = 0b11111110;
+char segB = 0b11111101;
+char segC = 0b11111011;
+char segD = 0b11110111;
+char segE = 0b11101111;
+char segF = 0b11011111;
+char segG = 0b10111111;
+char segDp= 0b01111111;
 
 // Interface command parsing
 void checkInterface()
 {
   if(Serial.available())
   {
+    selectPinsOff();
+    allSegmentsOff();
     char command = Serial.read();
     if(command == 32)
     {
-      MODE = 3;
+      MODE = INT_MODE;
       i_ones = 0;
       i_tens = 0;
       i_hundreds = 0;
@@ -592,7 +561,7 @@ void checkInterface()
     }
     else if(command == 33)
     {
-      MODE = 3;
+      MODE = INT_MODE;
       i_ones = 255;
       i_tens = 255;
       i_hundreds = 255;
@@ -604,147 +573,284 @@ void checkInterface()
     }
     else if(command == 35)
     {
-      // test 2
+      diag2();
     }
     else if(command == 36)
     {
-      // test 3
+      diag3();
     }
     else if(command == 37)
-    {
-      MODE = 0;
+    {      
+      MODE = INC_MODE;
     }
     else if(command == 38)
     {
-      MODE = 1;
+      MODE = DEC_MODE;
     }
 
 
+    
+    else if(command == 40)
+    {
+      
+      MODE = INT_MODE;
+    }
+    
     else if(command == 'a')
     {
-      for(int i = 0; i < 1000; i++)
-      {
-        updatePortValues(0b1111110);
-        pulseSelectLine(4, pulse_delay_ms);
-      }
-      
-      
+      i_ones = segA;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'b')
     {
-      
+      i_ones = segB;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'c')
     {
-      
+      i_ones = segC;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'd')
     {
-      
+      i_ones = segD;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'e')
     {
-      
+      i_ones = segE;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'f')
     {
-      
+      i_ones = segF;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'g')
     {
-      
+      i_ones = segG;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'h')
     {
-      
+      i_ones = segDp;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'i')
     {
-      
+      i_ones = 255;
+      i_tens = segA;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'j')
     {
-      
+      i_ones = 255;
+      i_tens = segB;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'k')
     {
-      
+      i_ones = 255;
+      i_tens = segC;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'l')
     {
-      
+      i_ones = 255;
+      i_tens = segD;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'm')
     {
-      
+      i_ones = 255;
+      i_tens = segE;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'n')
     {
-      
+      i_ones = 255;
+      i_tens = segF;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'o')
     {
-      
+      i_ones = 255;
+      i_tens = segG;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'p')
     {
-      
+      i_ones = 255;
+      i_tens = segDp;
+      i_hundreds = 255;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'q')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = segA;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'r')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = segB;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 's')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = segC;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 't')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = segD;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'u')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = segE;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'v')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = segF;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'w')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = segG;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'x')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = segDp;
+      i_thousands = 255;
+      MODE = INT_MODE;
     }
     else if(command == 'y')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = segA;
+      MODE = INT_MODE;
     }
     else if(command == 'z')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = segB;
+      MODE = INT_MODE;
     }
     else if(command == '{')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = segC;
+      MODE = INT_MODE;
     }
     else if(command == '|')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = segD;
+      MODE = INT_MODE;
     }
     else if(command == '}')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = segE;
+      MODE = INT_MODE;
     }
     else if(command == '~')
     {
-      
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = segF;
+      MODE = INT_MODE;
+    }
+    else if(command == '^')
+    {
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = segG;
+      MODE = INT_MODE;
+    }
+    else if(command == '_')
+    {
+      i_ones = 255;
+      i_tens = 255;
+      i_hundreds = 255;
+      i_thousands = segDp;
+      MODE = INT_MODE;
     }
   }
 }
@@ -786,6 +892,10 @@ void setup() {
   hundreds = 0;
   thousands = 0;
   
+  i_ones = 0b11111110;
+  i_tens = 255;
+  i_hundreds = 255;
+  i_thousands = 255;
   
   initPorts();
   initSelectPins();  
@@ -795,13 +905,6 @@ void setup() {
   // Last, due to it enables global interrupts at the end
   initTimer();
 }
-
-
-
-
-
-
-
 
 
 

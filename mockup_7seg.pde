@@ -7,6 +7,8 @@ ControlP5 allOnButton;
 ControlP5 allOffButton;
 ControlP5 increment;
 ControlP5 decrement;
+ControlP5 incrementSeg;
+ControlP5 decrementSeg;
 ControlP5 diagnosticTest1;
 ControlP5 diagnosticTest2;
 ControlP5 diagnosticTest3;
@@ -24,15 +26,17 @@ void setup()
   
   printArray(Serial.list());
   
+  // Open the port you are using at the rate you want:
+  port = new Serial(this, Serial.list()[0], 9600);
   
-  
-  
-  port = new Serial(this, "COM6", 9600);
+ 
   
   allOnButton = new ControlP5(this);
   allOffButton = new ControlP5(this);
   increment = new ControlP5(this);
   decrement = new ControlP5(this);
+  incrementSeg = new ControlP5(this);
+  decrementSeg = new ControlP5(this);
   diagnosticTest1 = new ControlP5(this);
   diagnosticTest2 = new ControlP5(this);
   diagnosticTest3 = new ControlP5(this);
@@ -43,10 +47,15 @@ void setup()
   segmentD = new ControlP5(this);
   font = createFont("calibri light", 11);
   
-  drawAllOnButton(200, 400, 100, 150);
-  drawAllOffButton(400, 400, 100, 150);
+  drawDecrementSeg(200, 400, 100, 150);
+  drawIncrementSeg(400, 400, 100, 150);
+  
   drawDecrement(200, 525, 100, 150);
   drawIncrement(400, 525, 100, 150);
+  
+  drawAllOnButton(200, 650, 100, 150);
+  drawAllOffButton(400, 650, 100, 150);
+  
   drawDiagnosticTest1(600, 400, 100, 150);
   drawDiagnosticTest2(600, 525, 100, 150);
   drawDiagnosticTest3(600, 650, 100, 150);
@@ -111,6 +120,15 @@ void decrement()
   port.write(38);
 }
 
+void incrementSeg()
+{
+  port.write(39);
+}
+void decrementSeg()
+{
+  port.write(40);
+}
+
 
 
 
@@ -148,111 +166,111 @@ void ag()
 }
 void ap()
 {
-  port.write('[');
+  port.write('h');
 }
 
 
 void ba()
 {
-  port.write('h');
+  port.write('i');
 }
 void bb()
 {
-  port.write('i');
+  port.write('j');
 }
 void bc()
 {
-  port.write('j');
+  port.write('k');
 }
 void bd()
 {
-  port.write('k');
+  port.write('l');
 }
 void be()
 {
-  port.write('l');
+  port.write('m');
 }
 void bf()
 {
-  port.write('m');
+  port.write('n');
 }
 void bg()
 {
-  port.write('n');
+  port.write('o');
 }
 void bp()
 {
-  port.write('\\');
+  port.write('p');
 }
 
 
 
 void ca()
 {
-  port.write('o');
+  port.write('q');
 }
 void cb()
 {
-  port.write('p');
+  port.write('r');
 }
 void cc()
 {
-  port.write('q');
+  port.write('s');
 }
 void cd()
 {
-  port.write('r');
+  port.write('t');
 }
 void ce()
 {
-  port.write('s');
+  port.write('u');
 }
 void cf()
 {
-  port.write('t');
+  port.write('v');
 }
 void cg()
 {
-  port.write('u');
+  port.write('w');
 }
 void cp()
 {
-  port.write(']');
+  port.write('x');
 }
 
 
 
 void da()
 {
-  port.write('v');
+  port.write('y');
 }
 void db()
 {
-  port.write('w');
+  port.write('z');
 }
 void dc()
 {
-  port.write('x');
+  port.write('{');
 }
 void dd()
 {
-  port.write('y');
+  port.write('|');
 }
 void de()
 {
-  port.write('z');
+  port.write('}');
 }
 void df()
 {
-  port.write('{');
+  port.write('~');
 }
 void dg()
 {
-  port.write('|');
+  port.write('^');
 }
 void dp()
 {
-  port.write('^');
+  port.write('_');
 } //<>//
 
 void draw()
@@ -260,7 +278,7 @@ void draw()
   background(200, 100, 200); // r g b
   fill(0, 255, 0);              // text color
   textFont(font);
-  text("LED CONTROL", 100, 30);
+  text(Serial.list()[0], 100, 30);
   variableEllipse(mouseX, mouseY, pmouseX, pmouseY);
   
 }
@@ -295,6 +313,23 @@ void drawIncrement(int xStart, int yStart, int height, int width)
 void drawDecrement(int xStart, int yStart, int height, int width)
 {
   allOnButton.addButton("decrement")
+    .setPosition(xStart, yStart)
+    .setSize(width, height)
+    .setFont(font)
+    ;
+}
+
+void drawIncrementSeg(int xStart, int yStart, int height, int width)
+{
+  allOnButton.addButton("incrementSeg")
+    .setPosition(xStart, yStart)
+    .setSize(width, height)
+    .setFont(font)
+    ;
+}
+void drawDecrementSeg(int xStart, int yStart, int height, int width)
+{
+  allOnButton.addButton("decrementSeg")
     .setPosition(xStart, yStart)
     .setSize(width, height)
     .setFont(font)
@@ -441,30 +476,30 @@ void draw7segDp_3(int xStart, int yStart, int height, int width, int xOffset, in
     .setSize(width, height)
     .setFont(font)
     ;
-  segmentC.addButton("dd")
+  segmentC.addButton("cd")
     .setPosition(xStart, (yStart+240))
     .setSize(height, width)
     .setFont(font)
     ;
     
-   segmentC.addButton("e")
+   segmentC.addButton("ce")
     .setPosition(xStart-40, yStart+(yOffset*4))
     .setSize(width, height)
     .setFont(font)
     ;
-   segmentC.addButton("ff")
+   segmentC.addButton("cf")
     .setPosition(xStart-40, yStart+(yOffset))
     .setSize(width, height)
     .setFont(font)
-    ;
-  segmentC.addButton("cg")
-    .setPosition(xStart+120, (yStart+240))
-    .setSize(width, width)
-    .setFont(font)
     ;    
-  segmentC.addButton("cp")
+  segmentC.addButton("cg")
     .setPosition(xStart, (yStart+120))
     .setSize(height, width)
+    .setFont(font)
+    ;
+  segmentC.addButton("cp")
+    .setPosition(xStart+120, (yStart+240))
+    .setSize(width, width)
     .setFont(font)
     ;
 }
@@ -501,15 +536,15 @@ void draw7segDp_4(int xStart, int yStart, int height, int width, int xOffset, in
     .setPosition(xStart-40, yStart+(yOffset))
     .setSize(width, height)
     .setFont(font)
-    ;
-  segmentD.addButton("dg")
-    .setPosition(xStart+120, (yStart+240))
-    .setSize(width, width)
-    .setFont(font)
     ;    
-  segmentD.addButton("dp")
+  segmentD.addButton("dg")
     .setPosition(xStart, (yStart+120))
     .setSize(height, width)
+    .setFont(font)
+    ;
+  segmentD.addButton("dp")
+    .setPosition(xStart+120, (yStart+240))
+    .setSize(width, width)
     .setFont(font)
     ;
 }
