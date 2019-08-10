@@ -625,14 +625,18 @@ void checkInterface()
     else if(command == 38)
     {
       MODE = DEC_MODE;
+    }    
+    else if(command == 39)
+    {
+      bCounting = !bCounting;
     }
-
-
     
     else if(command == 40)
     {
-      
-      MODE = INT_MODE;
+      ones = 0;
+      tens = 0;
+      hundreds = 0;
+      thousands = 0;
     }
     
     else if(command == 'a')
