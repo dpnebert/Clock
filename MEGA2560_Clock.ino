@@ -82,8 +82,8 @@ static int MODE = 0;
 
 
 
-                               //   D
-                               //   pGFEDCBA
+                                //   D
+                                //   pGFEDCBA
 const char characters[16]= { (char)0b11000000, //0
                              (char)0b11111001, //1
                              (char)0b10100100, //2
@@ -93,7 +93,7 @@ const char characters[16]= { (char)0b11000000, //0
                              (char)0b10000010, //6
                              (char)0b11111000, //7
                              (char)0b10000000, //8
-                             (char)0b10011000, //9
+                             (char)0b10010000, //9
                              (char)0b10001000, //A
                              (char)0b10000011, //B
                              (char)0b11000110, //C
@@ -947,6 +947,8 @@ void setup() {
   initButtons();
   initButtonInterrupts();
 
+  MODE = INC_MODE;
+  
   // Last, due to it enables global interrupts at the end
   initTimer();
 }
